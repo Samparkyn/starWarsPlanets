@@ -9,6 +9,7 @@ export default class PlanetContainer extends Component {
   
   constructor(props) {
     super(props);
+    this.pageChangeHandler = this.pageChangeHandler.bind(this);
     this.state = {
       planets: [],
       totalPages: 0,
@@ -26,6 +27,14 @@ export default class PlanetContainer extends Component {
       });
   }
   
+  pageChangeHandler(e) {
+    const newPage = parseInt(e.target.dataset.page);
+    console.log(newPage);
+    this.setState({
+      currentPage: newPage
+    });
+  }
+  
   render() {
     const { planets, totalPages, currentPage } = this.state;
     console.log(this.state);
@@ -37,6 +46,7 @@ export default class PlanetContainer extends Component {
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
+          changeHandler={this.pageChangeHandler}
         />
       </div>
     );

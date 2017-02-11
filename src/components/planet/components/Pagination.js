@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-export default function Pagination({totalPages, currentPage}) {
+export default function Pagination({totalPages, currentPage, changeHandler}) {
 
   const pages = [];
   let numberBefore = false;
@@ -31,13 +31,27 @@ export default function Pagination({totalPages, currentPage}) {
     }
   }
   
+  let prevArrow;
+  if (currentPage !== 1) {
+    prevArrow = <span data-page={currentPage - 1} onClick={changeHandler}>&#65513;</span>;
+  } else {
+    prevArrow = <span>&#65513;</span>;
+  }
+  
+  let nextArrow;
+  if (currentPage !== totalPages) {
+    nextArrow = <span data-page={currentPage + 1} onClick={changeHandler}>&#65515;</span>;
+  } else {
+    nextArrow = <span>&#65515;</span>;
+  }
+  
   return (
       <div>
-        <span>First</span>
+        <span data-page="1" onClick={changeHandler}>First</span>
         <span>{currentPage}</span>
-        <span>&#65513;</span>
+        {prevArrow}
         {pages}
-        <span>&#65515;</span>
+        {nextArrow}
         <span>Last</span>
       </div>
   );
@@ -45,5 +59,6 @@ export default function Pagination({totalPages, currentPage}) {
 
 Pagination.propTypes = {
   totalPages: PropTypes.number,
-  currentPage: PropTypes.number
+  currentPage: PropTypes.number,
+  changeHandler: PropTypes.func
 };
