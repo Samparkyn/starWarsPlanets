@@ -10,26 +10,34 @@ export default class PlanetContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      planets: []
+      planets: [],
+      totalPages: 0,
+      currentPage: 1
     };
   }
   
   componentWillMount() {
     fetchPlanetsList()
       .then(res => {
-        this.setState({planets: res.results});
-        console.log(res);
+        this.setState({
+          planets: res.results,
+          totalPages: Math.ceil(res.count / res.results.length)
+        });
       });
   }
   
   render() {
-    const { planets } = this.state;
+    const { planets, totalPages, currentPage } = this.state;
+    console.log(this.state);
     
     return (
       <div>
         <Search />
         <Table planets={planets}/>
-        <Pagination />
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+        />
       </div>
     );
   }
