@@ -20,9 +20,11 @@ export default class PlanetContainer extends Component {
   }
   
   render() {
+    const { planets } = this.state;
+    
     return (
       <div>
-        <Table />
+        <Table planets={planets}/>
       </div>
     );
   }

@@ -1,9 +1,19 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import Row from './Row.js';
 
 export default class Table extends Component {
   
+  static propTypes = {
+    planets: PropTypes.array
+  }
+  
   render() {
+    const { planets } = this.props;
+    
+    const rows = planets.map(planet => {
+      return <Row />;
+    });
+    
     return (
       <div>
         <table>
@@ -19,7 +29,7 @@ export default class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            <Row />
+            {rows}
           </tbody>
         </table>
       </div>
