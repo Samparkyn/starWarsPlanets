@@ -1,6 +1,9 @@
+import './styles/planet-container.css';
 import React, { Component } from 'react';
 import Table from './components/Table';
 import { fetchPlanetsList } from './utils/fetch-planets';
+import Pagination from './components/Pagination';
+import Search from './components/Search';
 
 export default class PlanetContainer extends Component {
   
@@ -24,7 +27,9 @@ export default class PlanetContainer extends Component {
     
     return (
       <div>
+        <Search />
         <Table planets={planets}/>
+        <Pagination />
       </div>
     );
   }
