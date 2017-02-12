@@ -11,9 +11,10 @@ export default class PlanetContainer extends Component {
   
   constructor(props) {
     super(props);
+    this.getPlanets = this.getPlanets.bind(this);
     this.pageChangeHandler = this.pageChangeHandler.bind(this);
-    this.searchHandler     = this.searchHandler.bind(this);
-    this.searchPlanet      = throttle(this.searchPlanet.bind(this), 1000);
+    this.searchHandler = this.searchHandler.bind(this);
+    this.searchPlanet = throttle(this.searchPlanet.bind(this), 1000);
     this.state = {
       planets: [],
       totalPages: 0,
@@ -24,19 +25,24 @@ export default class PlanetContainer extends Component {
   }
   
   componentWillMount() {
-    fetchPlanetsList()
-      .then(res => {
-        this.setState({
-          planets: res.results,
-          totalPages: Math.ceil(res.count / res.results.length)
-        });
-      });
+    this.getPlanets();
   }
   
   
   pageChangeHandler(e) {
     const newPage = parseInt(e.target.dataset.page);
     this.setState({currentPage: newPage});
+    this.getPlanets(newPage);
+  }
+  
+  getPlanets(newPage) {
+    fetchPlanetsList(newPage)
+      .then(res => {
+        this.setState({
+          planets: res.results,
+          totalPages: Math.ceil(res.count / res.results.length)
+        });
+      });
   }
   
   

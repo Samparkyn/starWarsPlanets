@@ -10,7 +10,7 @@ export default class Table extends Component {
   render() {
     const { planets } = this.props;
     
-    const rows = planets.map((planet, idx) => {
+    const rows = planets && planets.map((planet, idx) => {
       return <Row key={idx} planet={planet} />;
     });
     
