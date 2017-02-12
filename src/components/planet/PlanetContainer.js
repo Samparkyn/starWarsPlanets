@@ -1,19 +1,25 @@
+import React, { Component }              from 'react';
+import Table                             from './components/Table';
+import { fetchPlanetsList, fetchPlanet } from './utils/fetch-planets';
+import Pagination                        from './components/Pagination';
+import Search                            from './components/Search';
+import throttle                          from 'lodash.throttle';
 import './styles/planet-container.css';
-import React, { Component } from 'react';
-import Table from './components/Table';
-import { fetchPlanetsList } from './utils/fetch-planets';
-import Pagination from './components/Pagination';
-import Search from './components/Search';
+
 
 export default class PlanetContainer extends Component {
   
   constructor(props) {
     super(props);
     this.pageChangeHandler = this.pageChangeHandler.bind(this);
+    this.searchHandler     = this.searchHandler.bind(this);
+    this.searchPlanet      = throttle(this.searchPlanet.bind(this), 1000);
     this.state = {
       planets: [],
       totalPages: 0,
-      currentPage: 1
+      currentPage: 1,
+      search: '',
+      searchResults: []
     };
   }
   
@@ -27,22 +33,40 @@ export default class PlanetContainer extends Component {
       });
   }
   
+  
   pageChangeHandler(e) {
     const newPage = parseInt(e.target.dataset.page);
-    console.log(newPage);
-    this.setState({
-      currentPage: newPage
+    this.setState({currentPage: newPage});
+  }
+  
+  
+  searchHandler(e) {
+    const value = e.target.value;
+    this.setState({search: value});
+    
+    if (value.length >= 3) {
+      this.searchPlanet(value);
+    } else if (value.length <= 2) {
+      this.setState({searchResults: []});
+    }
+  }
+  
+  
+  searchPlanet(value) {
+    fetchPlanet(value)
+    .then(res => {
+      this.setState({searchResults: res.results});
     });
   }
   
   render() {
-    const { planets, totalPages, currentPage } = this.state;
-    console.log(this.state);
+    const { planets, totalPages, currentPage, search, searchResults } = this.state;
     
     return (
       <div>
-        <Search />
-        <Table planets={planets}/>
+        <Search
+          value={search} searchHandler={this.searchHandler} />
+        <Table planets={searchResults.length && searchResults || planets}/>
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}

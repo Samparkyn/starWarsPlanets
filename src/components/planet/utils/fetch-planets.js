@@ -5,3 +5,11 @@ export function fetchPlanetsList(pageNumber = 1) {
     console.error(error);
   });
 }
+
+export function fetchPlanet(value) {
+  return fetch(`http://swapi.co/api/planets/?search=${value}`)
+  .then(res => res.json())
+  .catch(error => {
+    console.error(error);
+  });
+}

@@ -1,3 +1,4 @@
+import '../styles/pagination.css';
 import React, { PropTypes } from 'react';
 
 export default function Pagination({totalPages, currentPage, changeHandler}) {
@@ -46,13 +47,12 @@ export default function Pagination({totalPages, currentPage, changeHandler}) {
   }
   
   return (
-      <div>
+      <div className="pageArrows">
         <span data-page="1" onClick={changeHandler}>First</span>
-        <span>{currentPage}</span>
         {prevArrow}
         {pages}
         {nextArrow}
-        <span>Last</span>
+        <span data-page={totalPages} onClick={changeHandler}>Last</span>
       </div>
   );
 }

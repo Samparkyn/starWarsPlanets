@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Search() {
+export default function Search({value, searchHandler}) {
   return (
       <div>
-        <input />
+        <input value={value} onChange={searchHandler} />
       </div>
   );
 }
