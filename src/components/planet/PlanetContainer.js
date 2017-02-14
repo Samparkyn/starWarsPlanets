@@ -15,12 +15,14 @@ export default class PlanetContainer extends Component {
     this.pageChangeHandler = this.pageChangeHandler.bind(this);
     this.searchHandler = this.searchHandler.bind(this);
     this.searchPlanet = throttle(this.searchPlanet.bind(this), 1000);
+    this.sortHandler = this.sortHandler.bind(this);
     this.state = {
       planets: [],
       totalPages: 0,
       currentPage: 1,
       search: '',
-      searchResults: []
+      searchResults: [],
+      sort: ''
     };
   }
   
@@ -65,6 +67,13 @@ export default class PlanetContainer extends Component {
     });
   }
   
+  sortHandler(e) {
+    const keyToSort = e.target.dataset.key;
+    const { planets } = this.state;
+    const sortedPlanets = planets.sort((a, b) => a[keyToSort].localeCompare(b[keyToSort]));
+    this.setState({planets: sortedPlanets});
+  }
+  
   render() {
     const { planets, totalPages, currentPage, search, searchResults } = this.state;
     
@@ -72,7 +81,9 @@ export default class PlanetContainer extends Component {
       <div>
         <Search
           value={search} searchHandler={this.searchHandler} />
-        <Table planets={searchResults.length && searchResults || planets}/>
+        <Table
+          planets={searchResults.length && searchResults || planets}
+          sortHandler={this.sortHandler} />
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}

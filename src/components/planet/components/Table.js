@@ -1,14 +1,16 @@
+import '../styles/table.css';
 import React, { PropTypes, Component } from 'react';
 import Row from './Row.js';
 
 export default class Table extends Component {
   
   static propTypes = {
-    planets: PropTypes.array
+    planets: PropTypes.array,
+    sortHandler: PropTypes.func
   }
   
   render() {
-    const { planets } = this.props;
+    const { planets, sortHandler } = this.props;
     
     const rows = planets && planets.map((planet, idx) => {
       return <Row key={idx} planet={planet} />;
@@ -19,11 +21,11 @@ export default class Table extends Component {
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Populations</th>
-              <th>Diameter</th>
-              <th>Rotation Period</th>
-              <th>Orbital Period</th>
+              <th data-key="name" onClick={sortHandler}>Name</th>
+              <th data-key="population" onClick={sortHandler}>Populations</th>
+              <th data-key="diameter" onClick={sortHandler}>Diameter</th>
+              <th data-key="rotation" onClick={sortHandler}>Rotation Period</th>
+              <th data-key="orbit" onClick={sortHandler}>Orbital Period</th>
               <th>Terrain</th>
               <th>Films</th>
             </tr>
