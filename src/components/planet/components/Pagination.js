@@ -6,8 +6,8 @@ export default function Pagination({totalPages, currentPage, changeHandler}) {
   const pages = [];
   let numberBefore = false;
   const dots = <span>...</span>;
-  const prev = <span>{currentPage - 1}</span>;
-  const next = <span>{currentPage + 1}</span>;
+  const prev = <span key="prev">{currentPage - 1}</span>;
+  const next = <span key="next">{currentPage + 1}</span>;
   const curr = <span>{currentPage}</span>;
   for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
     if (pageNumber === 1 && currentPage > 2) {

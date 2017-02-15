@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { planetFields }     from '../utils/planet-fields';
 
 export default function Row({planet}) {
   return (

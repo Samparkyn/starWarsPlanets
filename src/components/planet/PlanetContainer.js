@@ -22,7 +22,8 @@ export default class PlanetContainer extends Component {
       currentPage: 1,
       search: '',
       searchResults: [],
-      sort: ''
+      sortKey: 'name',
+      sortDesc: true
     };
   }
   
@@ -36,6 +37,7 @@ export default class PlanetContainer extends Component {
     this.setState({currentPage: newPage});
     this.getPlanets(newPage);
   }
+  
   
   getPlanets(newPage) {
     fetchPlanetsList(newPage)
@@ -67,22 +69,35 @@ export default class PlanetContainer extends Component {
     });
   }
   
+  
   sortHandler(e) {
+    const { sortKey, sortDesc } = this.state;
     const keyToSort = e.target.dataset.key;
-    const { planets } = this.state;
-    const sortedPlanets = planets.sort((a, b) => a[keyToSort].localeCompare(b[keyToSort]));
-    this.setState({planets: sortedPlanets});
+    
+    if (keyToSort === sortKey) {
+      this.setState({sortDesc: !sortDesc});
+    } else {
+      this.setState({sortKey: keyToSort, sortDesc: true});
+    }
   }
   
   render() {
-    const { planets, totalPages, currentPage, search, searchResults } = this.state;
+    const { planets, totalPages, currentPage, search, searchResults, sortKey, sortDesc } = this.state;
+    
+    const sortedPlanets = planets.sort((a, b) => {
+      if (sortDesc) {
+        return a[sortKey].localeCompare(b[sortKey]);
+      } else {
+        return b[sortKey].localeCompare(b[sortKey]);
+      }
+    });
     
     return (
       <div>
         <Search
           value={search} searchHandler={this.searchHandler} />
         <Table
-          planets={searchResults.length && searchResults || planets}
+          planets={searchResults.length && searchResults || sortedPlanets}
           sortHandler={this.sortHandler} />
         <Pagination
           totalPages={totalPages}

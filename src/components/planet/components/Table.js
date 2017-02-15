@@ -16,18 +16,27 @@ export default class Table extends Component {
       return <Row key={idx} planet={planet} />;
     });
     
+    const fields = ['name', 'population', 'diameter', 'rotation_period', 'orbital_period'];
+    const sortableColumns = fields.map((f, idx) => {
+      return (
+        <th
+          className="table-row sortable"
+          key={idx}
+          data-key={f}
+          onClick={sortHandler}>
+          {f.split('_').join(' ')}
+        </th>
+      );
+    });
+    
     return (
       <div>
         <table>
           <thead>
             <tr>
-              <th data-key="name" onClick={sortHandler}>Name</th>
-              <th data-key="population" onClick={sortHandler}>Populations</th>
-              <th data-key="diameter" onClick={sortHandler}>Diameter</th>
-              <th data-key="rotation" onClick={sortHandler}>Rotation Period</th>
-              <th data-key="orbit" onClick={sortHandler}>Orbital Period</th>
-              <th>Terrain</th>
-              <th>Films</th>
+              {sortableColumns}
+              <th className="table-row">terrain</th>
+              <th className="table-row">films</th>
             </tr>
           </thead>
           <tbody>
