@@ -5,15 +5,25 @@ import Row from './Row.js';
 export default class Table extends Component {
   
   static propTypes = {
-    planets: PropTypes.array,
+    planets:     PropTypes.array,
+    films:       PropTypes.object,
     sortHandler: PropTypes.func
   }
   
   render() {
-    const { planets, sortHandler } = this.props;
+    const { planets, sortHandler, films } = this.props;
     
     const rows = planets && planets.map((planet, idx) => {
-      return <Row key={idx} planet={planet} />;
+      let planetFilms = [];
+      const filmNumbers = planet.films.map(film => {
+        return /(\d+)/.exec(film)[0];
+      });
+      
+      planetFilms = filmNumbers.map(number => {
+        return films[number];
+      });
+      
+      return <Row key={idx} planet={planet} films={planetFilms} />;
     });
     
     const fields = ['name', 'population', 'diameter', 'rotation_period', 'orbital_period'];

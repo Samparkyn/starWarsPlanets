@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
-import { planetFields }     from '../utils/planet-fields';
 
-export default function Row({planet}) {
+export default function Row({planet, films}) {
   return (
     <tr>
       <td>{planet.name}</td>
@@ -10,11 +9,12 @@ export default function Row({planet}) {
       <td>{planet.rotation_period}</td>
       <td>{planet.orbital_period}</td>
       <td>{planet.terrain}</td>
-      <td>{planet.films}</td>
+      <td>{films.join(', ')}</td>
     </tr>
   );
 }
 
 Row.propTypes = {
-  planet: PropTypes.object
+  planet: PropTypes.object,
+  films:  PropTypes.array
 };

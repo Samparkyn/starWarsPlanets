@@ -1,9 +1,13 @@
 import React, { Component }              from 'react';
 import Table                             from './components/Table';
-import { fetchPlanetsList, fetchPlanet } from './utils/fetch-planets';
 import Pagination                        from './components/Pagination';
 import Search                            from './components/Search';
 import throttle                          from 'lodash.throttle';
+import {
+  fetchPlanetsList,
+  fetchFilmsList,
+  fetchPlanet,
+} from './utils/fetch-helper';
 import './styles/planet-container.css';
 
 
@@ -11,13 +15,15 @@ export default class PlanetContainer extends Component {
   
   constructor(props) {
     super(props);
-    this.getPlanets = this.getPlanets.bind(this);
+    this.getPlanets        = this.getPlanets.bind(this);
+    this.getFilms          = this.getFilms.bind(this);
     this.pageChangeHandler = this.pageChangeHandler.bind(this);
-    this.searchHandler = this.searchHandler.bind(this);
-    this.searchPlanet = throttle(this.searchPlanet.bind(this), 1000);
-    this.sortHandler = this.sortHandler.bind(this);
+    this.searchHandler     = this.searchHandler.bind(this);
+    this.searchPlanet      = throttle(this.searchPlanet.bind(this), 1000);
+    this.sortHandler       = this.sortHandler.bind(this);
     this.state = {
       planets: [],
+      films: {},
       totalPages: 0,
       currentPage: 1,
       search: '',
@@ -29,6 +35,7 @@ export default class PlanetContainer extends Component {
   
   componentWillMount() {
     this.getPlanets();
+    this.getFilms();
   }
   
   
@@ -45,6 +52,21 @@ export default class PlanetContainer extends Component {
         this.setState({
           planets: res.results,
           totalPages: Math.ceil(res.count / res.results.length)
+        });
+      });
+  }
+  
+  
+  getFilms() {
+    fetchFilmsList()
+      .then(res => {
+        const films = {};
+        res.results.map(r => {
+          const filmNumber = /(\d+)/.exec(r.url)[0];
+          films[filmNumber] = r.title;
+        });
+        this.setState({
+          films: films
         });
       });
   }
@@ -94,19 +116,6 @@ export default class PlanetContainer extends Component {
         }
       }
     });
-
-    // return planets.sort((a, b) => {
-    //   const bothNumbers = parseInt(a) && parseInt(b);
-    //   const oneIsNumber = parseInt(a) || parseInt(b);
-    //
-    //   if (bothNumbers) {
-    //     if (sortAsc) {
-    //       return a - b;
-    //     } else {
-    //       return b - a;
-    //     }
-    //   }
-    // });
   }
   
   
@@ -122,16 +131,16 @@ export default class PlanetContainer extends Component {
   }
   
   render() {
-    const { totalPages, currentPage, search, searchResults } = this.state;
-    
+    const { totalPages, currentPage, search, searchResults, films } = this.state;
     const sortedPlanets = this.sortPlanets();
-
+    console.log('films', films);
     return (
       <div>
         <Search
           value={search} searchHandler={this.searchHandler} />
         <Table
           planets={searchResults.length && searchResults || sortedPlanets}
+          films={films}
           sortHandler={this.sortHandler} />
         <Pagination
           totalPages={totalPages}
