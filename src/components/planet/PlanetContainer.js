@@ -23,7 +23,7 @@ export default class PlanetContainer extends Component {
       search: '',
       searchResults: [],
       sortKey: 'name',
-      sortDesc: true
+      sortAsc: true
     };
   }
   
@@ -70,28 +70,62 @@ export default class PlanetContainer extends Component {
   }
   
   
+  sortPlanets() {
+    const { planets, sortKey, sortAsc } = this.state;
+    
+    const numericKeys = ['diameter', 'rotation_period', 'orbital_period', 'population'];
+    
+    return planets.sort((a, b) => {
+      if (numericKeys.includes(sortKey)) {
+        if (!parseInt(a[sortKey])) {
+          return 1;
+        } else if (!parseInt(b[sortKey])) {
+          return -1;
+        } else if (parseInt(a) === parseInt(b)) {
+          return 0;
+        } else {
+          return sortAsc ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey];
+        }
+      } else {
+        if (sortAsc) {
+          return a[sortKey].localeCompare(b[sortKey]);
+        } else {
+          return b[sortKey].localeCompare(a[sortKey]);
+        }
+      }
+    });
+
+    // return planets.sort((a, b) => {
+    //   const bothNumbers = parseInt(a) && parseInt(b);
+    //   const oneIsNumber = parseInt(a) || parseInt(b);
+    //
+    //   if (bothNumbers) {
+    //     if (sortAsc) {
+    //       return a - b;
+    //     } else {
+    //       return b - a;
+    //     }
+    //   }
+    // });
+  }
+  
+  
   sortHandler(e) {
-    const { sortKey, sortDesc } = this.state;
+    const { sortKey, sortAsc } = this.state;
     const keyToSort = e.target.dataset.key;
     
     if (keyToSort === sortKey) {
-      this.setState({sortDesc: !sortDesc});
+      this.setState({sortAsc: !sortAsc});
     } else {
       this.setState({sortKey: keyToSort, sortDesc: true});
     }
   }
   
   render() {
-    const { planets, totalPages, currentPage, search, searchResults, sortKey, sortDesc } = this.state;
+    const { totalPages, currentPage, search, searchResults } = this.state;
     
-    const sortedPlanets = planets.sort((a, b) => {
-      if (sortDesc) {
-        return a[sortKey].localeCompare(b[sortKey]);
-      } else {
-        return b[sortKey].localeCompare(b[sortKey]);
-      }
-    });
-    
+    const sortedPlanets = this.sortPlanets();
+
     return (
       <div>
         <Search

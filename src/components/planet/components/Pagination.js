@@ -5,10 +5,10 @@ export default function Pagination({totalPages, currentPage, changeHandler}) {
 
   const pages = [];
   let numberBefore = false;
-  const dots = <span>...</span>;
+  const dots = <span key="dots">...</span>;
   const prev = <span key="prev">{currentPage - 1}</span>;
   const next = <span key="next">{currentPage + 1}</span>;
-  const curr = <span>{currentPage}</span>;
+  const curr = <span key="curr">{currentPage}</span>;
   for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
     if (pageNumber === 1 && currentPage > 2) {
       pages.push(dots);
@@ -47,13 +47,13 @@ export default function Pagination({totalPages, currentPage, changeHandler}) {
   }
   
   return (
-      <div className="pageArrows">
-        <span data-page="1" onClick={changeHandler}>First</span>
-        {prevArrow}
-        {pages}
-        {nextArrow}
-        <span data-page={totalPages} onClick={changeHandler}>Last</span>
-      </div>
+    <div className="pageArrows">
+      <span data-page="1" onClick={changeHandler}>First</span>
+      {prevArrow}
+      {pages}
+      {nextArrow}
+      <span data-page={totalPages} onClick={changeHandler}>Last</span>
+    </div>
   );
 }
 
