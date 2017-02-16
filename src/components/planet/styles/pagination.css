@@ -1,3 +1,30 @@
-.pageArrows {
-  margin-left: 80%;
+.pagination {
+  display: flex;
+  width: 300px;
+  margin-left: auto;
+  padding-right: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination .arrow {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.curr-page {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.pagination span {
+  cursor: pointer;
+}
+
+.pagination span:hover {
+  color: rgba(0, 0, 0, .5);
 }
