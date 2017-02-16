@@ -43,7 +43,7 @@ export default class Table extends Component {
       <div>
         <table>
           <thead>
-            <tr>
+            <tr className="table-columns">
               {sortableColumns}
               <th className="table-row">terrain</th>
               <th className="table-row">films</th>

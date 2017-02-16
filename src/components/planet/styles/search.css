@@ -1,0 +1,26 @@
+.planets-search {
+  background-color: #e2e9f4;
+}
+
+.planets-search input {
+  position: relative;
+  width: 300px;
+  height: 30px;
+  margin: 15px;
+  border-radius: 7px;
+  border: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transition-duration: 0.1s;
+  font-size: 0.8rem;
+  padding-left: 35px;
+  background: url('../../../images/search-icon.png') no-repeat;
+  background-color: #FFF;
+  background-position: 5px 5px;
+  background-size: 22px;
+}
+
+.planets-search input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #95abee;
+  transition-duration: 0.1s;
+}

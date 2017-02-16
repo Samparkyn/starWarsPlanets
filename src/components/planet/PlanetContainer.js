@@ -132,8 +132,9 @@ export default class PlanetContainer extends Component {
   
   render() {
     const { totalPages, currentPage, search, searchResults, films } = this.state;
+    
     const sortedPlanets = this.sortPlanets();
-    console.log('films', films);
+
     return (
       <div>
         <Search
